@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/Vue.js" ></script>
+	</head>
+	<body>
+		<style>
+			*{margin: 0;padding: 0;}
+			html{font: 14px/1.5 "微软雅黑","microsoft yahei",sans-serif;color: #333;}
+			ul li{list-style-type: none;}
+			.all-box{position: relative;width: 1000px;margin: 0 auto;margin-top: 20px;}
+			.txt-ipt{position: relative;}
+			.txt-ipt textarea{display: block;width: 100%;height: 100px;padding: 10px 10px;box-sizing: border-box;border-radius: 4px;outline: none;resize: none;}
+			.txt-ipt .cue{position: absolute;right: 10px;bottom: 5px;}
+			.txt-ipt .cue span:first-of-type{color: red;margin-right: -4px;}
+			.tj-btn{position: absolute;right: 0;bottom: -40px;display: block;font-size: 14px;padding: 5px 20px;color: #fff;
+			background-color: cornflowerblue;border: none;border-radius: 4px;cursor: pointer;outline: none;opacity: .8;transition: opacity .1s ease;}
+			.tj-btn:hover{opacity: 1;}
+			.ly-box{margin-top: 50px;border-top: 1px solid #eaeaea;}
+			.ly-box>li{padding: 10px;box-sizing: border-box;margin-top: 10px;border: 1px solid #eaeaea;}
+			.ly-box li h3,.ly-box li p:nth-of-type(1){display: inline-block;vertical-align: middle;}
+			.ly-box li p:nth-of-type(1){padding-left: 10px;color: rgba(0,0,0,.6);}
+			.ly-box li p:nth-of-type(2){margin-top: 10px;margin-bottom: 10px;word-break: break-all;word-wrap: break-word;}
+		</style>
+		
+		<div id="vue-box" class="all-box">
+			<div class="txt-ipt">
+				<textarea v-model="txtVal" maxlength="200" rows="4" placeholder="来说几句吧..."></textarea>
+				<div class="cue">
+					<span>{{txtl}}</span>
+					<span>/200</span>
+				</div>
+				<button class="tj-btn" @click="handleClick">评论</button>
+			</div>
+			<ul class="ly-box">
+				<li v-for="(item,index) of list" :key="list.id">
+					<h3>匿名</h3>
+					<p>{{time[index++]}}</p>
+					<p>{{item}}</p>
+					<div class="huifu">
+						
+					</div>
+				</li>
+			</ul>
+		</div>
+		
+		<script>
+			new Vue({
+				el: '#vue-box',
+				data: {
+					txtl: 200,
+					txtVal: '',
+					list:[],
+					time:[],
+				},
+				methods: {
+					handleClick: function () {
+						if(this.txtVal!=''){
+							var newDate = new Date();
+							var mytime=newDate.toLocaleTimeString();
+							this.list.push(this.txtVal);
+							this.time.push(mytime);
+							this.txtVal='';
+							this.txtl=80
+						}else{
+							alert('输入内容不能为空');
+						}						
+					}
+				},
+				watch: {
+					txtVal: function () {
+						this.txtl=200-this.txtVal.length;
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
